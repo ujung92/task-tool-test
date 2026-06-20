@@ -42,13 +42,13 @@ npm run dev # http://localhost:3000
 
 ## 자주 쓰는 명령어
 
-| 명령                  | 설명                |
-| --------------------- | ------------------- |
-| `npm run dev`         | 개발 서버           |
-| `npm run build`       | 프로덕션 빌드       |
-| `npm run test`        | 테스트              |
-| `npm run db:studio`   | DB GUI              |
-| `npm run db:reset`    | DB 초기화 후 재시드 |
+| 명령                | 설명                |
+| ------------------- | ------------------- |
+| `npm run dev`       | 개발 서버           |
+| `npm run build`     | 프로덕션 빌드       |
+| `npm run test`      | 테스트              |
+| `npm run db:studio` | DB GUI              |
+| `npm run db:reset`  | DB 초기화 후 재시드 |
 
 ## 배포 시 주의
 
