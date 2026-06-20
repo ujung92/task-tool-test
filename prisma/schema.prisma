@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// 보일러플레이트의 유일한 모델. 세션은 쿠키(JWT)로 처리하므로 Session 테이블이 없다.
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String          // 비밀번호 원문은 저장하지 않는다(해시만)
+  name         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
