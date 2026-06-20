@@ -5,7 +5,7 @@ import { logout } from '@/features/auth/actions'
 import { Button } from '@/components/ui/Button'
 
 export default async function ProtectedLayout({ children }: { children: React.ReactNode }) {
-  // 진짜 유저 검증(미들웨어는 쿠키 존재만 봤음). 없으면 로그인으로.
+  // 진짜 유저 검증(proxy는 쿠키 존재만 봤음). 없으면 로그인으로.
   const user = await getCurrentUser()
   if (!user) redirect('/login')
 

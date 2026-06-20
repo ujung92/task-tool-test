@@ -29,10 +29,10 @@ npm run dev # http://localhost:3000
 
 1. 회원가입: 검증(zod) → 비번 해싱(bcryptjs) → User 생성 → 세션 쿠키 발급
 2. 로그인: User 조회 → 비번 비교 → 서명된 JWT(jose)를 httpOnly 쿠키로 저장
-3. 보호 페이지: `middleware`가 쿠키 확인 후, `(protected)/layout`이 실제 유저 검증
+3. 보호 페이지: `proxy`가 쿠키 확인 후, `(protected)/layout`이 실제 유저 검증
 4. 로그아웃: 쿠키 삭제
 
-관련 파일: `src/features/auth/`(actions·session·password·validation), `src/middleware.ts`
+관련 파일: `src/features/auth/`(actions·session·password·validation), `src/proxy.ts`
 
 ## 새 기능/모델 추가하는 법 (예: 게시글)
 
