@@ -12,24 +12,20 @@ type TaskCardProps = {
 
 export function TaskCard({ task }: TaskCardProps) {
   return (
-    <Link
-      href={`/tasks/${task.id}`}
-      className="block rounded-md border bg-white p-3 shadow-sm transition-colors hover:border-gray-400"
-    >
+    <Link href={`/tasks/${task.id}`} className="teamboard-task-card">
+      <div className="teamboard-card-top">
+        <span className="teamboard-card-badge">Task</span>
+        <span className="teamboard-priority">{task.createdAt.toLocaleDateString('ko-KR')}</span>
+      </div>
+
       <div className="space-y-2">
-        <h3 className="font-medium">{task.title}</h3>
-        <dl className="space-y-1 text-xs text-gray-600">
+        <h3>{task.title}</h3>
+        <dl className="teamboard-card-meta">
           <div>
-            <dt className="inline font-medium">Assignee:</dt>{' '}
-            <dd className="inline">{task.assignee.name ?? task.assignee.email}</dd>
+            <dt className="inline font-medium">Assignee:</dt> <dd className="inline">{task.assignee.name ?? task.assignee.email}</dd>
           </div>
           <div>
-            <dt className="inline font-medium">Author:</dt>{' '}
-            <dd className="inline">{task.author.name ?? task.author.email}</dd>
-          </div>
-          <div>
-            <dt className="inline font-medium">Created:</dt>{' '}
-            <dd className="inline">{task.createdAt.toLocaleDateString('ko-KR')}</dd>
+            <dt className="inline font-medium">Author:</dt> <dd className="inline">{task.author.name ?? task.author.email}</dd>
           </div>
         </dl>
       </div>

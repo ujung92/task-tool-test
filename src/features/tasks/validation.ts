@@ -15,5 +15,9 @@ export const taskSchema = z.object({
 })
 
 export const commentSchema = z.object({
-  body: z.string().trim().min(1, 'Enter a comment.').max(1000, 'Comment must be 1000 chars or fewer.'),
+  body: z
+    .string()
+    .trim()
+    .min(1, 'Enter a comment.')
+    .max(1000, 'Comment must be 1000 chars or fewer.'),
 })

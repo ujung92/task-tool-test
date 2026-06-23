@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teamboard</title>
+    <style>
+      :root {
+        --bg: #070b14;
+        --bg-elevated: rgba(15, 23, 42, 0.9);
+        --bg-soft: rgba(30, 41, 59, 0.72);
+        --border: rgba(148, 163, 184, 0.22);
+        --text: #f8fafc;
+        --muted: #94a3b8;
+        --todo: #38bdf8;
+        --progress: #f59e0b;
+        --done: #22c55e;
+        --hero-accent: #e50914;
+        --shadow: 0 24px 60px rgba(2, 6, 23, 0.45);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(229, 9, 20, 0.18), transparent 28%),
+          radial-gradient(circle at top right, rgba(56, 189, 248, 0.12), transparent 24%),
+          linear-gradient(180deg, #020617 0%, #070b14 32%, #0f172a 100%);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page-shell {
+        width: min(1440px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 22px 0;
+        backdrop-filter: blur(18px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .brand-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #ef4444, #e50914 72%);
+        box-shadow: 0 16px 30px rgba(229, 9, 20, 0.28);
+        font-weight: 800;
+        letter-spacing: 0.04em;
+      }
+
+      .brand-copy strong {
+        display: block;
+        font-size: 1rem;
+      }
+
+      .brand-copy span {
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+
+      .nav-links a {
+        color: var(--muted);
+        font-size: 0.95rem;
+        transition: color 180ms ease;
+      }
+
+      .nav-links a:hover {
+        color: var(--text);
+      }
+
+      .nav-cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 18px;
+        border-radius: 999px;
+        background: rgba(248, 250, 252, 0.08);
+        border: 1px solid rgba(248, 250, 252, 0.12);
+        font-size: 0.92rem;
+      }
+
+      .hero {
+        position: relative;
+        overflow: hidden;
+        min-height: 72vh;
+        display: grid;
+        align-items: end;
+        padding: 56px 0 48px;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(90deg, rgba(2, 6, 23, 0.92) 0%, rgba(2, 6, 23, 0.58) 48%, rgba(2, 6, 23, 0.15) 100%),
+          url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=80")
+            center/cover no-repeat;
+        border-radius: 28px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: auto 0 0 0;
+        height: 140px;
+        background: linear-gradient(180deg, transparent, rgba(2, 6, 23, 0.92));
+        border-radius: 0 0 28px 28px;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 640px;
+        padding: 0 40px 14px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.72);
+        color: #fda4af;
+        font-size: 0.84rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .hero h1 {
+        margin: 0 0 18px;
+        font-size: clamp(2.8rem, 7vw, 5.6rem);
+        line-height: 0.96;
+        letter-spacing: -0.03em;
+      }
+
+      .hero p {
+        margin: 0;
+        color: #dbe4f0;
+        font-size: 1.02rem;
+        line-height: 1.75;
+        max-width: 58ch;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-top: 28px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-height: 48px;
+        padding: 0 18px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        font-size: 0.96rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          transform 180ms ease,
+          border-color 180ms ease,
+          background 180ms ease;
+      }
+
+      .button:hover {
+        transform: translateY(-1px);
+      }
+
+      .button-primary {
+        background: linear-gradient(135deg, #ef4444, var(--hero-accent));
+        box-shadow: 0 18px 38px rgba(229, 9, 20, 0.28);
+      }
+
+      .button-secondary {
+        background: rgba(15, 23, 42, 0.65);
+        border-color: rgba(148, 163, 184, 0.26);
+      }
+
+      .section {
+        padding: 42px 0 18px;
+      }
+
+      .section-heading {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 24px;
+      }
+
+      .section-heading h2 {
+        margin: 0;
+        font-size: clamp(1.6rem, 3vw, 2.2rem);
+      }
+
+      .section-heading p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        max-width: 62ch;
+        line-height: 1.7;
+      }
+
+      .section-heading .meta {
+        color: var(--muted);
+        font-size: 0.92rem;
+        white-space: nowrap;
+      }
+
+      .board-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .column {
+        min-width: 0;
+        padding: 20px;
+        border-radius: 24px;
+        border: 1px solid var(--border);
+        background:
+          linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(15, 23, 42, 0.72)),
+          rgba(15, 23, 42, 0.78);
+        box-shadow: var(--shadow);
+      }
+
+      .column-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .column-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1rem;
+        font-weight: 700;
+      }
+
+      .status-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+        box-shadow: 0 0 20px currentColor;
+      }
+
+      .dot-todo {
+        color: var(--todo);
+        background: var(--todo);
+      }
+
+      .dot-progress {
+        color: var(--progress);
+        background: var(--progress);
+      }
+
+      .dot-done {
+        color: var(--done);
+        background: var(--done);
+      }
+
+      .count-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 38px;
+        height: 32px;
+        padding: 0 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+
+      .card-stack {
+        display: grid;
+        gap: 14px;
+      }
+
+      .task-card {
+        position: relative;
+        overflow: hidden;
+        padding: 18px;
+        border-radius: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background:
+          linear-gradient(180deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.92));
+        transition:
+          transform 220ms ease,
+          box-shadow 220ms ease,
+          border-color 220ms ease;
+      }
+
+      .task-card::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 2px;
+        opacity: 0.8;
+      }
+
+      .task-card.todo::before {
+        background: linear-gradient(90deg, transparent, var(--todo), transparent);
+      }
+
+      .task-card.progress::before {
+        background: linear-gradient(90deg, transparent, var(--progress), transparent);
+      }
+
+      .task-card.done::before {
+        background: linear-gradient(90deg, transparent, var(--done), transparent);
+      }
+
+      .task-card:hover {
+        transform: translateY(-8px) scale(1.01);
+        border-color: rgba(255, 255, 255, 0.16);
+        box-shadow: 0 26px 48px rgba(2, 6, 23, 0.52);
+      }
+
+      .card-top {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .tag.todo {
+        color: #7dd3fc;
+        background: rgba(14, 165, 233, 0.16);
+      }
+
+      .tag.progress {
+        color: #fcd34d;
+        background: rgba(245, 158, 11, 0.18);
+      }
+
+      .tag.done {
+        color: #86efac;
+        background: rgba(34, 197, 94, 0.18);
+      }
+
+      .priority {
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+
+      .task-card h3 {
+        margin: 0 0 10px;
+        font-size: 1.08rem;
+      }
+
+      .task-card p {
+        margin: 0 0 16px;
+        color: #dbe4f0;
+        font-size: 0.94rem;
+        line-height: 1.7;
+      }
+
+      .card-meta {
+        display: grid;
+        gap: 10px;
+      }
+
+      .meta-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        color: var(--muted);
+        font-size: 0.84rem;
+      }
+
+      .avatars {
+        display: flex;
+        align-items: center;
+      }
+
+      .avatar {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        margin-left: -8px;
+        border: 2px solid rgba(2, 6, 23, 0.88);
+        border-radius: 999px;
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.4), rgba(168, 85, 247, 0.36));
+        font-size: 0.76rem;
+        font-weight: 700;
+      }
+
+      .avatar:first-child {
+        margin-left: 0;
+      }
+
+      .footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 48px 0 56px;
+        color: var(--muted);
+        font-size: 0.92rem;
+        flex-wrap: wrap;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .footer-links a:hover {
+        color: var(--text);
+      }
+
+      @media (max-width: 1100px) {
+        .board-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero {
+          min-height: 64vh;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .page-shell {
+          width: min(100% - 20px, 1440px);
+        }
+
+        .nav {
+          padding: 16px 0;
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .nav-links {
+          justify-content: space-between;
+        }
+
+        .hero {
+          min-height: auto;
+          padding-top: 16px;
+        }
+
+        .hero::before,
+        .hero::after {
+          border-radius: 24px;
+        }
+
+        .hero-content {
+          padding: 26px 22px 22px;
+        }
+
+        .hero-actions,
+        .section-heading,
+        .footer {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .button {
+          width: 100%;
+        }
+
+        .column {
+          padding: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="nav">
+        <div class="brand">
+          <div class="brand-badge">TB</div>
+          <div class="brand-copy">
+            <strong>Teamboard</strong>
+            <span>Executive task orchestration</span>
+          </div>
+        </div>
+        <nav class="nav-links">
+          <a href="#hero">Overview</a>
+          <a href="#board">Task Streams</a>
+          <a href="#footer">Contact</a>
+          <a class="nav-cta" href="#board">Open Board</a>
+        </nav>
+      </header>
+
+      <section class="hero" id="hero">
+        <div class="hero-content">
+          <div class="eyebrow">Featured workflow</div>
+          <h1>Ship aligned work with a cinematic team board.</h1>
+          <p>
+            Teamboard brings strategic clarity to everyday execution. High-signal priorities,
+            polished progress tracking, and decisive ownership all live in one immersive command
+            surface designed for leaders and delivery teams.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#board">Explore active board</a>
+            <a class="button button-secondary" href="#footer">View team cadence</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="board">
+        <div class="section-heading">
+          <div>
+            <h2>Task Streams</h2>
+            <p>
+              Each lane is tuned for quick scanning and richer decision context. Cards highlight
+              ownership, scheduling, status, and delivery notes without losing visual calm.
+            </p>
+          </div>
+          <div class="meta">12 live initiatives · 3 delivery states</div>
+        </div>
+
+        <div class="board-grid">
+          <section class="column">
+            <div class="column-head">
+              <div class="column-label">
+                <span class="status-dot dot-todo"></span>
+                <span>To do list</span>
+              </div>
+              <span class="count-pill">4</span>
+            </div>
+            <div class="card-stack">
+              <article class="task-card todo">
+                <div class="card-top">
+                  <span class="tag todo">Backlog</span>
+                  <span class="priority">High priority</span>
+                </div>
+                <h3>Executive dashboard redesign kickoff</h3>
+                <p>
+                  Finalize the new stakeholder-ready overview with denser KPI framing, richer
+                  visual hierarchy, and updated reporting tiles for weekly reviews.
+                </p>
+                <div class="card-meta">
+                  <div class="meta-row">
+                    <span>Due Friday · 09:00</span>
+                    <div class="avatars">
+                      <span class="avatar">AL</span>
+                      <span class="avatar">MK</span>
+                    </div>
+                  </div>
+                  <div class="meta-row">
+                    <span>Owner: Product Design</span>
+                    <span>8 subtasks</span>
+                  </div>
+                </div>
+              </article>
+
+              <article class="task-card todo">
+                <div class="card-top">
+                  <span class="tag todo">Planning</span>
+                  <span class="priority">Needs scope</span>
+                </div>
+                <h3>HTML-only agent rollout brief</h3>
+                <p>
+                  Document the single-file delivery flow for lightweight microsites and align the
+                  release checklist with faster approval loops for static deliverables.
+                </p>
+                <div class="card-meta">
+                  <div class="meta-row">
+                    <span>Due Monday · 14:00</span>
+                    <div class="avatars">
+                      <span class="avatar">HN</span>
+                      <span class="avatar">SY</span>
+                    </div>
+                  </div>
+                  <div class="meta-row">
+                    <span>Owner: Platform Ops</span>
+                    <span>5 subtasks</span>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="column">
+            <div class="column-head">
+              <div class="column-label">
+                <span class="status-dot dot-progress"></span>
+                <span>In progress list</span>
+              </div>
+              <span class="count-pill">5</span>
+            </div>
+            <div class="card-stack">
+              <article class="task-card progress">
+                <div class="card-top">
+                  <span class="tag progress">Active sprint</span>
+                  <span class="priority">In review</span>
+                </div>
+                <h3>Responsive Teamboard single-page prototype</h3>
+                <p>
+                  Build a premium dark-mode static experience with hero narrative, hover-rich task
+                  cards, and responsive board behavior that opens directly in the browser.
+                </p>
+                <div class="card-meta">
+                  <div class="meta-row">
+                    <span>ETA today · 18:30</span>
+                    <div class="avatars">
+                      <span class="avatar">CW</span>
+                      <span class="avatar">JS</span>
+                      <span class="avatar">QN</span>
+                    </div>
+                  </div>
+                  <div class="meta-row">
+                    <span>Owner: Frontend Studio</span>
+                    <span>12 subtasks</span>
+                  </div>
+                </div>
+              </article>
+
+              <article class="task-card progress">
+                <div class="card-top">
+                  <span class="tag progress">Coordination</span>
+                  <span class="priority">Cross-team</span>
+                </div>
+                <h3>Q3 launch sequencing review</h3>
+                <p>
+                  Reconcile engineering, marketing, and support milestones into one publishable
+                  timeline so dependencies surface before the final approval meeting.
+                </p>
+                <div class="card-meta">
+                  <div class="meta-row">
+                    <span>Next sync · 16:00</span>
+                    <div class="avatars">
+                      <span class="avatar">DR</span>
+                      <span class="avatar">YL</span>
+                    </div>
+                  </div>
+                  <div class="meta-row">
+                    <span>Owner: Program Office</span>
+                    <span>3 blockers</span>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="column">
+            <div class="column-head">
+              <div class="column-label">
+                <span class="status-dot dot-done"></span>
+                <span>Done list</span>
+              </div>
+              <span class="count-pill">3</span>
+            </div>
+            <div class="card-stack">
+              <article class="task-card done">
+                <div class="card-top">
+                  <span class="tag done">Delivered</span>
+                  <span class="priority">Signed off</span>
+                </div>
+                <h3>Authentication baseline stabilization</h3>
+                <p>
+                  Hardened the protected route flow, cleaned validation paths, and established a
+                  dependable user session baseline for the next delivery wave.
+                </p>
+                <div class="card-meta">
+                  <div class="meta-row">
+                    <span>Completed yesterday</span>
+                    <div class="avatars">
+                      <span class="avatar">KM</span>
+                      <span class="avatar">EC</span>
+                    </div>
+                  </div>
+                  <div class="meta-row">
+                    <span>Owner: Core App</span>
+                    <span>0 open issues</span>
+                  </div>
+                </div>
+              </article>
+
+              <article class="task-card done">
+                <div class="card-top">
+                  <span class="tag done">Closed</span>
+                  <span class="priority">Archived</span>
+                </div>
+                <h3>Seed dataset and status taxonomy alignment</h3>
+                <p>
+                  Unified sample data, delivery states, and ownership labels so demos and internal
+                  reviews now speak the same operational language.
+                </p>
+                <div class="card-meta">
+                  <div class="meta-row">
+                    <span>Completed Monday</span>
+                    <div class="avatars">
+                      <span class="avatar">PT</span>
+                    </div>
+                  </div>
+                  <div class="meta-row">
+                    <span>Owner: Data Enablement</span>
+                    <span>Retrospective ready</span>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <footer class="footer" id="footer">
+        <div>
+          <strong>Teamboard</strong><br />
+          Premium task visibility for high-context delivery teams.
+        </div>
+        <div class="footer-links">
+          <a href="#hero">Hero</a>
+          <a href="#board">Board</a>
+          <a href="#footer">Footer</a>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      const taskCards = document.querySelectorAll(".task-card");
+
+      taskCards.forEach((card) => {
+        card.addEventListener("mousemove", (event) => {
+          const rect = card.getBoundingClientRect();
+          const x = ((event.clientX - rect.left) / rect.width) * 100;
+          const y = ((event.clientY - rect.top) / rect.height) * 100;
+          card.style.background =
+            "radial-gradient(circle at " +
+            x +
+            "% " +
+            y +
+            "%, rgba(255,255,255,0.12), transparent 34%), linear-gradient(180deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.92))";
+        });
+
+        card.addEventListener("mouseleave", () => {
+          card.style.background =
+            "linear-gradient(180deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.92))";
+        });
+      });
+    </script>
+  </body>
+</html>

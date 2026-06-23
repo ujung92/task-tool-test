@@ -14,7 +14,7 @@ export function DeleteTaskButton({ taskId }: { taskId: string }) {
       }}
     >
       <input type="hidden" name="taskId" value={taskId} />
-      <Button type="submit" className="bg-red-600 hover:bg-red-700">
+      <Button type="submit" className="teamboard-delete-button">
         Delete task
       </Button>
     </form>

@@ -24,66 +24,87 @@ export default async function TaskDetailPage({ params }: TaskDetailPageProps) {
   const canManage = canManageTask(task, user.id)
 
   return (
-    <main className="mx-auto max-w-3xl space-y-8 p-8">
-      <section className="space-y-3">
-        <h1 className="text-2xl font-bold">{task.title}</h1>
-        <dl className="space-y-1 text-sm text-gray-600">
-          <div>
-            <dt className="inline font-medium">Status:</dt> <dd className="inline">{task.status}</dd>
+    <main className="teamboard-page">
+      <div className="teamboard-shell teamboard-task-shell">
+        <section className="teamboard-task-hero">
+          <div className="teamboard-task-hero-copy">
+            <div className="teamboard-eyebrow">Task detail</div>
+            <h1>{task.title}</h1>
+            <p>{task.description || 'No description.'}</p>
           </div>
-          <div>
-            <dt className="inline font-medium">Author:</dt>{' '}
-            <dd className="inline">{task.author.name ?? task.author.email}</dd>
-          </div>
-          <div>
-            <dt className="inline font-medium">Assignee:</dt>{' '}
-            <dd className="inline">{task.assignee.name ?? task.assignee.email}</dd>
-          </div>
-        </dl>
-        <p className="rounded-md border bg-gray-50 p-4 text-sm whitespace-pre-wrap">
-          {task.description || 'No description.'}
-        </p>
-      </section>
 
-      {canManage ? (
-        <section className="space-y-4">
-          <h2 className="text-lg font-semibold">Edit task</h2>
-          <TaskForm
-            action={updateTask}
-            submitLabel="Save task"
-            pendingLabel="Saving.."
-            assignees={assignees}
-            defaultValues={{
-              taskId: task.id,
-              title: task.title,
-              description: task.description,
-              status: task.status,
-              assigneeId: task.assigneeId,
-            }}
-          />
-          <DeleteTaskButton taskId={task.id} />
+          <div className="teamboard-task-summary">
+            <div className="teamboard-task-summary-item">
+              <span>Status</span>
+              <strong>{task.status}</strong>
+            </div>
+            <div className="teamboard-task-summary-item">
+              <span>Author</span>
+              <strong>{task.author.name ?? task.author.email}</strong>
+            </div>
+            <div className="teamboard-task-summary-item">
+              <span>Assignee</span>
+              <strong>{task.assignee.name ?? task.assignee.email}</strong>
+            </div>
+          </div>
         </section>
-      ) : null}
 
-      <section className="space-y-4">
-        <h2 className="text-lg font-semibold">Comments</h2>
-        <div className="space-y-3">
-          {task.comments.length ? (
-            task.comments.map((comment) => (
-              <article key={comment.id} className="rounded-md border p-3">
-                <p className="text-sm whitespace-pre-wrap">{comment.body}</p>
-                <p className="mt-2 text-xs text-gray-500">
-                  {comment.author.name ?? comment.author.email} ·{' '}
-                  {comment.createdAt.toLocaleString('ko-KR')}
-                </p>
-              </article>
-            ))
-          ) : (
-            <p className="text-sm text-gray-500">No comments yet.</p>
-          )}
-        </div>
-        <CommentForm taskId={task.id} />
-      </section>
+        {canManage ? (
+          <section className="teamboard-task-panel">
+            <div className="teamboard-task-panel-head">
+              <div>
+                <h2>Edit task</h2>
+                <p>Adjust ownership, detail, and execution status in the same premium workspace.</p>
+              </div>
+            </div>
+
+            <TaskForm
+              action={updateTask}
+              submitLabel="Save task"
+              pendingLabel="Saving.."
+              assignees={assignees}
+              defaultValues={{
+                taskId: task.id,
+                title: task.title,
+                description: task.description,
+                status: task.status,
+                assigneeId: task.assigneeId,
+              }}
+            />
+
+            <div className="teamboard-task-danger">
+              <DeleteTaskButton taskId={task.id} />
+            </div>
+          </section>
+        ) : null}
+
+        <section className="teamboard-task-panel">
+          <div className="teamboard-task-panel-head">
+            <div>
+              <h2>Comments</h2>
+              <p>Keep delivery context, decisions, and progress notes visible on the task itself.</p>
+            </div>
+          </div>
+
+          <div className="teamboard-comment-list">
+            {task.comments.length ? (
+              task.comments.map((comment) => (
+                <article key={comment.id} className="teamboard-comment-card">
+                  <p>{comment.body}</p>
+                  <div className="teamboard-comment-meta">
+                    <span>{comment.author.name ?? comment.author.email}</span>
+                    <span>{comment.createdAt.toLocaleString('ko-KR')}</span>
+                  </div>
+                </article>
+              ))
+            ) : (
+              <p className="teamboard-empty-state">No comments yet.</p>
+            )}
+          </div>
+
+          <CommentForm taskId={task.id} />
+        </section>
+      </div>
     </main>
   )
 }

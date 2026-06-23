@@ -24,3 +24,815 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.teamboard-page {
+  min-height: 100vh;
+  color: #f8fafc;
+  background:
+    radial-gradient(circle at top left, rgba(229, 9, 20, 0.18), transparent 28%),
+    radial-gradient(circle at top right, rgba(56, 189, 248, 0.12), transparent 24%),
+    linear-gradient(180deg, #020617 0%, #070b14 32%, #0f172a 100%);
+}
+
+.teamboard-page *,
+.teamboard-page *::before,
+.teamboard-page *::after {
+  box-sizing: border-box;
+}
+
+.teamboard-page a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.teamboard-shell {
+  width: min(1440px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.teamboard-dashboard-shell {
+  padding: 28px 0 56px;
+}
+
+.teamboard-dashboard-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.9fr);
+  gap: 24px;
+  align-items: stretch;
+  margin-bottom: 28px;
+  padding: 28px;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.76)),
+    radial-gradient(circle at top right, rgba(229, 9, 20, 0.18), transparent 34%);
+  box-shadow: 0 24px 60px rgba(2, 6, 23, 0.45);
+}
+
+.teamboard-dashboard-copy h1 {
+  margin: 0 0 14px;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+
+.teamboard-dashboard-copy p {
+  margin: 0;
+  max-width: 56ch;
+  color: #dbe4f0;
+  line-height: 1.75;
+}
+
+.teamboard-dashboard-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.teamboard-dashboard-stats {
+  display: grid;
+  gap: 14px;
+}
+
+.teamboard-dashboard-stat {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 74px;
+  padding: 18px 20px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(30, 41, 59, 0.58);
+}
+
+.teamboard-dashboard-stat strong {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.teamboard-dashboard-stat-label {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.teamboard-dashboard-button {
+  width: 100%;
+  min-height: 52px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #ef4444, #e50914);
+  box-shadow: 0 18px 38px rgba(229, 9, 20, 0.24);
+}
+
+.teamboard-dashboard-board {
+  display: grid;
+  gap: 20px;
+}
+
+.teamboard-task-shell {
+  padding: 28px 0 56px;
+  display: grid;
+  gap: 24px;
+}
+
+.teamboard-task-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.9fr);
+  gap: 24px;
+  align-items: stretch;
+  padding: 28px;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.76)),
+    radial-gradient(circle at top right, rgba(56, 189, 248, 0.16), transparent 34%);
+  box-shadow: 0 24px 60px rgba(2, 6, 23, 0.45);
+}
+
+.teamboard-task-hero-copy h1 {
+  margin: 0 0 14px;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+
+.teamboard-task-hero-copy p {
+  margin: 0;
+  color: #dbe4f0;
+  line-height: 1.75;
+  max-width: 58ch;
+}
+
+.teamboard-task-summary {
+  display: grid;
+  gap: 14px;
+}
+
+.teamboard-task-summary-item {
+  display: grid;
+  gap: 6px;
+  padding: 18px 20px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(30, 41, 59, 0.58);
+}
+
+.teamboard-task-summary-item span {
+  color: #94a3b8;
+  font-size: 0.84rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.teamboard-task-summary-item strong {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.teamboard-task-panel {
+  display: grid;
+  gap: 20px;
+  padding: 24px;
+  border-radius: 26px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(15, 23, 42, 0.76)),
+    rgba(15, 23, 42, 0.82);
+  box-shadow: 0 24px 60px rgba(2, 6, 23, 0.38);
+}
+
+.teamboard-task-panel-head h2 {
+  margin: 0 0 8px;
+  font-size: 1.5rem;
+}
+
+.teamboard-task-panel-head p {
+  margin: 0;
+  color: #94a3b8;
+  line-height: 1.7;
+}
+
+.teamboard-task-form,
+.teamboard-comment-form {
+  display: grid;
+  gap: 18px;
+}
+
+.teamboard-form-field label {
+  color: #e2e8f0;
+}
+
+.teamboard-form-field input,
+.teamboard-form-select,
+.teamboard-form-textarea {
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(15, 23, 42, 0.72);
+  color: #f8fafc;
+  padding: 14px 16px;
+  font-size: 0.95rem;
+  outline: none;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease;
+}
+
+.teamboard-form-field input::placeholder,
+.teamboard-form-textarea::placeholder {
+  color: #64748b;
+}
+
+.teamboard-form-field input:focus,
+.teamboard-form-select:focus,
+.teamboard-form-textarea:focus {
+  border-color: rgba(56, 189, 248, 0.72);
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.14);
+}
+
+.teamboard-form-textarea {
+  resize: vertical;
+  min-height: 132px;
+}
+
+.teamboard-form-button {
+  min-height: 50px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ef4444, #e50914);
+  box-shadow: 0 18px 38px rgba(229, 9, 20, 0.22);
+}
+
+.teamboard-form-error {
+  margin: 0;
+  color: #fda4af;
+  font-size: 0.92rem;
+}
+
+.teamboard-form-success {
+  margin: 0;
+  color: #86efac;
+  font-size: 0.92rem;
+}
+
+.teamboard-task-danger {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.teamboard-delete-button {
+  min-height: 46px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #b91c1c, #dc2626);
+  box-shadow: 0 16px 30px rgba(127, 29, 29, 0.24);
+}
+
+.teamboard-comment-list {
+  display: grid;
+  gap: 14px;
+}
+
+.teamboard-comment-card {
+  padding: 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.08), transparent 36%),
+    linear-gradient(180deg, rgba(30, 41, 59, 0.92), rgba(15, 23, 42, 0.9));
+}
+
+.teamboard-comment-card p {
+  margin: 0;
+  color: #dbe4f0;
+  line-height: 1.75;
+}
+
+.teamboard-comment-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 14px;
+  color: #94a3b8;
+  font-size: 0.82rem;
+  flex-wrap: wrap;
+}
+
+.teamboard-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 0;
+  backdrop-filter: blur(18px);
+}
+
+.teamboard-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.teamboard-brand-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ef4444, #e50914 72%);
+  box-shadow: 0 16px 30px rgba(229, 9, 20, 0.28);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.teamboard-brand-copy strong {
+  display: block;
+  font-size: 1rem;
+}
+
+.teamboard-brand-copy span {
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+.teamboard-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.teamboard-nav-links a {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  transition: color 180ms ease;
+}
+
+.teamboard-nav-links a:hover {
+  color: #f8fafc;
+}
+
+.teamboard-nav-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: rgba(248, 250, 252, 0.08);
+  border: 1px solid rgba(248, 250, 252, 0.12);
+  font-size: 0.92rem;
+}
+
+.teamboard-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 72vh;
+  display: grid;
+  align-items: end;
+  padding: 56px 0 48px;
+}
+
+.teamboard-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(2, 6, 23, 0.92) 0%, rgba(2, 6, 23, 0.58) 48%, rgba(2, 6, 23, 0.15) 100%),
+    url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=80')
+      center / cover no-repeat;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.teamboard-hero::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 140px;
+  background: linear-gradient(180deg, transparent, rgba(2, 6, 23, 0.92));
+  border-radius: 0 0 28px 28px;
+}
+
+.teamboard-hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  padding: 0 40px 14px;
+}
+
+.teamboard-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.72);
+  color: #fda4af;
+  font-size: 0.84rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.teamboard-hero h1 {
+  margin: 0 0 18px;
+  font-size: clamp(2.8rem, 7vw, 5.6rem);
+  line-height: 0.96;
+  letter-spacing: -0.03em;
+}
+
+.teamboard-hero p {
+  margin: 0;
+  color: #dbe4f0;
+  font-size: 1.02rem;
+  line-height: 1.75;
+  max-width: 58ch;
+}
+
+.teamboard-hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+
+.teamboard-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 0.96rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.teamboard-button:hover {
+  transform: translateY(-1px);
+}
+
+.teamboard-button-primary {
+  background: linear-gradient(135deg, #ef4444, #e50914);
+  box-shadow: 0 18px 38px rgba(229, 9, 20, 0.28);
+}
+
+.teamboard-button-secondary {
+  background: rgba(15, 23, 42, 0.65);
+  border-color: rgba(148, 163, 184, 0.26);
+}
+
+.teamboard-section {
+  padding: 42px 0 18px;
+}
+
+.teamboard-section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.teamboard-section-heading h2 {
+  margin: 0;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+
+.teamboard-section-heading p {
+  margin: 8px 0 0;
+  color: #94a3b8;
+  max-width: 62ch;
+  line-height: 1.7;
+}
+
+.teamboard-meta {
+  color: #94a3b8;
+  font-size: 0.92rem;
+  white-space: nowrap;
+}
+
+.teamboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.teamboard-column {
+  min-width: 0;
+  padding: 20px;
+  border-radius: 24px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(15, 23, 42, 0.72)),
+    rgba(15, 23, 42, 0.78);
+  box-shadow: 0 24px 60px rgba(2, 6, 23, 0.45);
+}
+
+.teamboard-column-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.teamboard-column-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.teamboard-column-label h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.teamboard-status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  box-shadow: 0 0 20px currentColor;
+}
+
+.teamboard-status-dot.todo {
+  color: #38bdf8;
+  background: #38bdf8;
+}
+
+.teamboard-status-dot.progress {
+  color: #f59e0b;
+  background: #f59e0b;
+}
+
+.teamboard-status-dot.done {
+  color: #22c55e;
+  background: #22c55e;
+}
+
+.teamboard-count-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #94a3b8;
+  font-size: 0.88rem;
+}
+
+.teamboard-card-stack {
+  display: grid;
+  gap: 14px;
+}
+
+.teamboard-empty-state {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.92rem;
+}
+
+.teamboard-task-card {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  padding: 18px;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.1), transparent 34%),
+    linear-gradient(180deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.92));
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    border-color 220ms ease;
+}
+
+.teamboard-task-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  opacity: 0.8;
+}
+
+.teamboard-task-card.todo::before {
+  background: linear-gradient(90deg, transparent, #38bdf8, transparent);
+}
+
+.teamboard-task-card.progress::before {
+  background: linear-gradient(90deg, transparent, #f59e0b, transparent);
+}
+
+.teamboard-task-card.done::before {
+  background: linear-gradient(90deg, transparent, #22c55e, transparent);
+}
+
+.teamboard-task-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 26px 48px rgba(2, 6, 23, 0.52);
+}
+
+.teamboard-card-top {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.teamboard-card-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #e2e8f0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.teamboard-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.teamboard-tag.todo {
+  color: #7dd3fc;
+  background: rgba(14, 165, 233, 0.16);
+}
+
+.teamboard-tag.progress {
+  color: #fcd34d;
+  background: rgba(245, 158, 11, 0.18);
+}
+
+.teamboard-tag.done {
+  color: #86efac;
+  background: rgba(34, 197, 94, 0.18);
+}
+
+.teamboard-priority {
+  color: #94a3b8;
+  font-size: 0.8rem;
+}
+
+.teamboard-task-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.08rem;
+}
+
+.teamboard-card-meta {
+  display: grid;
+  gap: 8px;
+  color: #94a3b8;
+  font-size: 0.84rem;
+}
+
+.teamboard-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: #94a3b8;
+  font-size: 0.84rem;
+}
+
+.teamboard-avatars {
+  display: flex;
+  align-items: center;
+}
+
+.teamboard-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-left: -8px;
+  border: 2px solid rgba(2, 6, 23, 0.88);
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.4), rgba(168, 85, 247, 0.36));
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.teamboard-avatar:first-child {
+  margin-left: 0;
+}
+
+.teamboard-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 48px 0 56px;
+  color: #94a3b8;
+  font-size: 0.92rem;
+  flex-wrap: wrap;
+}
+
+.teamboard-footer-links {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.teamboard-footer-links a:hover {
+  color: #f8fafc;
+}
+
+@media (max-width: 1100px) {
+  .teamboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .teamboard-hero {
+    min-height: 64vh;
+  }
+
+  .teamboard-dashboard-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .teamboard-task-hero {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .teamboard-shell {
+    width: min(100% - 20px, 1440px);
+  }
+
+  .teamboard-nav {
+    padding: 16px 0;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .teamboard-nav-links {
+    justify-content: space-between;
+  }
+
+  .teamboard-hero {
+    min-height: auto;
+    padding-top: 16px;
+  }
+
+  .teamboard-hero::before,
+  .teamboard-hero::after {
+    border-radius: 24px;
+  }
+
+  .teamboard-hero-content {
+    padding: 26px 22px 22px;
+  }
+
+  .teamboard-hero-actions,
+  .teamboard-section-heading,
+  .teamboard-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .teamboard-button {
+    width: 100%;
+  }
+
+  .teamboard-column {
+    padding: 18px;
+  }
+
+  .teamboard-task-panel,
+  .teamboard-task-hero {
+    padding: 20px;
+  }
+}

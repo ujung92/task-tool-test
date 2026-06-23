@@ -34,36 +34,36 @@ export function TaskForm({
   const [state, formAction, pending] = useActionState(action, undefined)
 
   return (
-    <form action={formAction} className="space-y-4">
+    <form action={formAction} className="teamboard-task-form">
       {defaultValues?.taskId ? <input type="hidden" name="taskId" value={defaultValues.taskId} /> : null}
-      {state?.error ? <p className="text-sm text-red-600">{state.error}</p> : null}
-      {state?.success ? <p className="text-sm text-green-600">{state.success}</p> : null}
+      {state?.error ? <p className="teamboard-form-error">{state.error}</p> : null}
+      {state?.success ? <p className="teamboard-form-success">{state.success}</p> : null}
 
-      <div>
+      <div className="teamboard-form-field">
         <Label htmlFor="title">Title</Label>
         <Input id="title" name="title" defaultValue={defaultValues?.title ?? ''} required />
         <FieldError messages={state?.fieldErrors?.title} />
       </div>
 
-      <div>
+      <div className="teamboard-form-field">
         <Label htmlFor="description">Description</Label>
         <textarea
           id="description"
           name="description"
           defaultValue={defaultValues?.description ?? ''}
           rows={5}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+          className="teamboard-form-textarea"
         />
         <FieldError messages={state?.fieldErrors?.description} />
       </div>
 
-      <div>
+      <div className="teamboard-form-field">
         <Label htmlFor="assigneeId">Assignee</Label>
         <select
           id="assigneeId"
           name="assigneeId"
           defaultValue={defaultValues?.assigneeId ?? ''}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+          className="teamboard-form-select"
           required
         >
           <option value="" disabled>
@@ -78,13 +78,13 @@ export function TaskForm({
         <FieldError messages={state?.fieldErrors?.assigneeId} />
       </div>
 
-      <div>
+      <div className="teamboard-form-field">
         <Label htmlFor="status">Status</Label>
         <select
           id="status"
           name="status"
           defaultValue={defaultValues?.status ?? 'TODO'}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+          className="teamboard-form-select"
         >
           <option value="TODO">To do</option>
           <option value="IN_PROGRESS">In progress</option>
@@ -93,7 +93,7 @@ export function TaskForm({
         <FieldError messages={state?.fieldErrors?.status} />
       </div>
 
-      <Button type="submit" disabled={pending}>
+      <Button type="submit" disabled={pending} className="teamboard-form-button">
         {pending ? pendingLabel : submitLabel}
       </Button>
     </form>

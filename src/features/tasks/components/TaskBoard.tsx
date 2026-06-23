@@ -17,21 +17,27 @@ type BoardTask = {
 
 export function TaskBoard({ tasks }: { tasks: BoardTask[] }) {
   return (
-    <div className="grid gap-4 md:grid-cols-3">
+    <div className="teamboard-grid">
       {columns.map((column) => {
         const columnTasks = tasks.filter((task) => task.status === column.key)
+        const tone =
+          column.key === 'TODO' ? 'todo' : column.key === 'IN_PROGRESS' ? 'progress' : 'done'
 
         return (
-          <section key={column.key} className="space-y-3 rounded-md border bg-gray-50 p-4">
-            <div className="flex items-center justify-between">
-              <h2 className="font-semibold">{column.title}</h2>
-              <span className="text-sm text-gray-500">{columnTasks.length}</span>
+          <section key={column.key} className="teamboard-column">
+            <div className="teamboard-column-head">
+              <div className="teamboard-column-label">
+                <span className={`teamboard-status-dot ${tone}`} />
+                <h2>{column.title}</h2>
+              </div>
+              <span className="teamboard-count-pill">{columnTasks.length}</span>
             </div>
-            <div className="space-y-3">
+
+            <div className="teamboard-card-stack">
               {columnTasks.length ? (
                 columnTasks.map((task) => <TaskCard key={task.id} task={task} />)
               ) : (
-                <p className="text-sm text-gray-500">No tasks yet.</p>
+                <p className="teamboard-empty-state">No tasks yet.</p>
               )}
             </div>
           </section>

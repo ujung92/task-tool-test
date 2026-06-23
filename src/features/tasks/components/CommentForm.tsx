@@ -10,21 +10,18 @@ export function CommentForm({ taskId }: { taskId: string }) {
   const [state, formAction, pending] = useActionState(addComment, undefined)
 
   return (
-    <form action={formAction} className="space-y-3">
+    <form action={formAction} className="teamboard-comment-form">
       <input type="hidden" name="taskId" value={taskId} />
-      {state?.error ? <p className="text-sm text-red-600">{state.error}</p> : null}
-      {state?.success ? <p className="text-sm text-green-600">{state.success}</p> : null}
-      <div>
+      {state?.error ? <p className="teamboard-form-error">{state.error}</p> : null}
+      {state?.success ? <p className="teamboard-form-success">{state.success}</p> : null}
+
+      <div className="teamboard-form-field">
         <Label htmlFor="body">Comment</Label>
-        <textarea
-          id="body"
-          name="body"
-          rows={4}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-        />
+        <textarea id="body" name="body" rows={4} className="teamboard-form-textarea" />
         <FieldError messages={state?.fieldErrors?.body} />
       </div>
-      <Button type="submit" disabled={pending}>
+
+      <Button type="submit" disabled={pending} className="teamboard-form-button">
         {pending ? 'Posting..' : 'Post comment'}
       </Button>
     </form>

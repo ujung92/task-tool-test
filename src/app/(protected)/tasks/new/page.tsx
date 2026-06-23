@@ -6,17 +6,35 @@ export default async function NewTaskPage() {
   const assignees = await getAssignableUsers()
 
   return (
-    <main className="mx-auto max-w-2xl space-y-6 p-8">
-      <div>
-        <h1 className="text-2xl font-bold">New Task</h1>
-        <p className="text-sm text-gray-600">Create a team task with an assignee.</p>
+    <main className="teamboard-page">
+      <div className="teamboard-shell teamboard-task-shell">
+        <section className="teamboard-task-hero">
+          <div className="teamboard-task-hero-copy">
+            <div className="teamboard-eyebrow">Task creation</div>
+            <h1>Open a new workstream with clear ownership.</h1>
+            <p>
+              Capture the outcome, assign the owner, and place the task in the right execution
+              lane without leaving the board rhythm.
+            </p>
+          </div>
+        </section>
+
+        <section className="teamboard-task-panel">
+          <div className="teamboard-task-panel-head">
+            <div>
+              <h2>New Task</h2>
+              <p>Create a team task with assignee, status, and supporting detail.</p>
+            </div>
+          </div>
+
+          <TaskForm
+            action={createTask}
+            submitLabel="Create task"
+            pendingLabel="Creating.."
+            assignees={assignees}
+          />
+        </section>
       </div>
-      <TaskForm
-        action={createTask}
-        submitLabel="Create task"
-        pendingLabel="Creating.."
-        assignees={assignees}
-      />
     </main>
   )
 }
