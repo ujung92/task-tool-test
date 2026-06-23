@@ -8,6 +8,7 @@ describe('taskSchema', () => {
       description: 'Create board and detail pages',
       status: 'TODO',
       assigneeId: 'user_123',
+      completedAt: '2026-06-23',
     })
 
     expect(result.success).toBe(true)
@@ -19,6 +20,7 @@ describe('taskSchema', () => {
       description: '',
       status: 'TODO',
       assigneeId: 'user_123',
+      completedAt: '2026-06-23',
     })
 
     expect(result.success).toBe(false)
@@ -30,6 +32,19 @@ describe('taskSchema', () => {
       description: '',
       status: 'BLOCKED',
       assigneeId: 'user_123',
+      completedAt: '2026-06-23',
+    })
+
+    expect(result.success).toBe(false)
+  })
+
+  it('rejects invalid completion date', () => {
+    const result = taskSchema.safeParse({
+      title: 'Bad date',
+      description: '',
+      status: 'TODO',
+      assigneeId: 'user_123',
+      completedAt: 'not-a-date',
     })
 
     expect(result.success).toBe(false)

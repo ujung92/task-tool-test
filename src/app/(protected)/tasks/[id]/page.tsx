@@ -46,6 +46,10 @@ export default async function TaskDetailPage({ params }: TaskDetailPageProps) {
               <span>Assignee</span>
               <strong>{task.assignee.name ?? task.assignee.email}</strong>
             </div>
+            <div className="teamboard-task-summary-item">
+              <span>Completion date</span>
+              <strong>{task.completedAt.toLocaleDateString('ko-KR')}</strong>
+            </div>
           </div>
         </section>
 
@@ -69,6 +73,7 @@ export default async function TaskDetailPage({ params }: TaskDetailPageProps) {
                 description: task.description,
                 status: task.status,
                 assigneeId: task.assigneeId,
+                completedAt: task.completedAt,
               }}
             />
 

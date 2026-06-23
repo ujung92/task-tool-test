@@ -52,7 +52,7 @@ export default async function DashboardPage() {
                 handoff decisions.
               </p>
             </div>
-            <div className="teamboard-meta">{tasks.length} active tasks · live shared board</div>
+            <div className="teamboard-meta">{tasks.length} active tasks - live shared board</div>
           </div>
 
           <TaskBoard tasks={tasks} />

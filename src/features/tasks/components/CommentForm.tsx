@@ -1,16 +1,25 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useActionState, useEffect, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import { addComment } from '../actions'
 import { Button } from '@/components/ui/Button'
 import { FieldError } from '@/components/ui/FieldError'
 import { Label } from '@/components/ui/Label'
 
 export function CommentForm({ taskId }: { taskId: string }) {
+  const formRef = useRef<HTMLFormElement>(null)
+  const router = useRouter()
   const [state, formAction, pending] = useActionState(addComment, undefined)
 
+  useEffect(() => {
+    if (!state?.success) return
+    formRef.current?.reset()
+    router.refresh()
+  }, [router, state?.success])
+
   return (
-    <form action={formAction} className="teamboard-comment-form">
+    <form ref={formRef} action={formAction} className="teamboard-comment-form">
       <input type="hidden" name="taskId" value={taskId} />
       {state?.error ? <p className="teamboard-form-error">{state.error}</p> : null}
       {state?.success ? <p className="teamboard-form-success">{state.success}</p> : null}

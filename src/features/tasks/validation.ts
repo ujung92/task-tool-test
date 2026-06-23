@@ -12,6 +12,11 @@ export const taskSchema = z.object({
     .transform((value) => value || undefined),
   status: z.enum(taskStatusValues),
   assigneeId: z.string().min(1, 'Select an assignee.'),
+  completedAt: z
+    .string()
+    .min(1, 'Select a completion date.')
+    .refine((value) => !Number.isNaN(Date.parse(value)), 'Enter a valid completion date.')
+    .transform((value) => new Date(`${value}T00:00:00`)),
 })
 
 export const commentSchema = z.object({

@@ -10,6 +10,12 @@ import { Label } from '@/components/ui/Label'
 type UserOption = { id: string; name: string | null; email: string }
 type Action = (state: FormState, formData: FormData) => Promise<FormState>
 
+function formatDateInput(value?: string | Date | null) {
+  if (!value) return ''
+  const date = value instanceof Date ? value : new Date(value)
+  return Number.isNaN(date.getTime()) ? '' : date.toISOString().slice(0, 10)
+}
+
 type TaskFormProps = {
   action: Action
   submitLabel: string
@@ -21,6 +27,7 @@ type TaskFormProps = {
     description?: string | null
     status?: 'TODO' | 'IN_PROGRESS' | 'DONE'
     assigneeId?: string
+    completedAt?: string | Date | null
   }
 }
 
@@ -91,6 +98,18 @@ export function TaskForm({
           <option value="DONE">Done</option>
         </select>
         <FieldError messages={state?.fieldErrors?.status} />
+      </div>
+
+      <div className="teamboard-form-field">
+        <Label htmlFor="completedAt">Completion date</Label>
+        <Input
+          id="completedAt"
+          name="completedAt"
+          type="date"
+          required
+          defaultValue={formatDateInput(defaultValues?.completedAt ?? new Date())}
+        />
+        <FieldError messages={state?.fieldErrors?.completedAt} />
       </div>
 
       <Button type="submit" disabled={pending} className="teamboard-form-button">

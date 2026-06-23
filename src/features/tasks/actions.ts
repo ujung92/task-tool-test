@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import type { FormState } from '@/lib/forms'
 import { getCurrentUser } from '@/features/users/queries'
+import { notifyTaskEvent } from '@/lib/slack'
 import { canManageTask } from './permissions'
 import { commentSchema, taskSchema } from './validation'
 
@@ -17,13 +18,14 @@ export async function createTask(_prev: FormState, formData: FormData): Promise<
     description: (formData.get('description') as string) || undefined,
     status: formData.get('status'),
     assigneeId: formData.get('assigneeId'),
+    completedAt: formData.get('completedAt'),
   })
 
   if (!parsed.success) {
     return { fieldErrors: parsed.error.flatten().fieldErrors }
   }
 
-  const task = await prisma.task.create({
+  await prisma.task.create({
     data: {
       ...parsed.data,
       description: parsed.data.description ?? null,
@@ -31,8 +33,10 @@ export async function createTask(_prev: FormState, formData: FormData): Promise<
     },
   })
 
+  await notifyTaskEvent('created', parsed.data.title, user.name ?? user.email)
+
   revalidatePath('/dashboard')
-  redirect(`/tasks/${task.id}`)
+  redirect('/dashboard')
 }
 
 export async function updateTask(_prev: FormState, formData: FormData): Promise<FormState> {
@@ -54,6 +58,7 @@ export async function updateTask(_prev: FormState, formData: FormData): Promise<
     description: (formData.get('description') as string) || undefined,
     status: formData.get('status'),
     assigneeId: formData.get('assigneeId'),
+    completedAt: formData.get('completedAt'),
   })
 
   if (!parsed.success) {
@@ -67,6 +72,8 @@ export async function updateTask(_prev: FormState, formData: FormData): Promise<
       description: parsed.data.description ?? null,
     },
   })
+
+  await notifyTaskEvent('updated', parsed.data.title, user.name ?? user.email)
 
   revalidatePath('/dashboard')
   revalidatePath(`/tasks/${taskId}`)
@@ -117,6 +124,7 @@ export async function addComment(_prev: FormState, formData: FormData): Promise<
     data: { taskId, authorId: user.id, body: parsed.data.body },
   })
 
+  revalidatePath('/dashboard')
   revalidatePath(`/tasks/${taskId}`)
   return { success: 'Comment added.' }
 }

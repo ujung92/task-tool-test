@@ -28,6 +28,7 @@ model Task {
   status      TaskStatus @default(TODO)
   authorId    String
   assigneeId  String
+  completedAt DateTime   @default(now())
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   author      User       @relation("TaskAuthor", fields: [authorId], references: [id])

@@ -7,6 +7,12 @@ export async function getBoardTasks() {
     include: {
       author: { select: { id: true, name: true, email: true } },
       assignee: { select: { id: true, name: true, email: true } },
+      comments: {
+        orderBy: { createdAt: 'asc' },
+        include: {
+          author: { select: { id: true, name: true, email: true } },
+        },
+      },
     },
   })
 }
